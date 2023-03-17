@@ -18,4 +18,4 @@ const mailingListSchema = new mongoose.Schema({
 
 const MailingList = mongoose.model("MailingList", mailingListSchema);
 
-module.exports(MailingList);
+module.exports = MailingList;
