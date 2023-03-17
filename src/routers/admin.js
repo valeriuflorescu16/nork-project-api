@@ -28,3 +28,5 @@ router.post("/admin/logout", auth, async (req, res) => {
     res.status(500).send("Something went wrong.");
   }
 });
+
+module.exports = router;
