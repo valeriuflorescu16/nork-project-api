@@ -12,7 +12,7 @@ router.post("/admin/login", async (req, res) => {
     const token = await admin.generateAuthToken();
     res.send({ admin, token });
   } catch (error) {
-    res.status(400).send();
+    res.status(400).send("Error when trying to log in");
   }
 });
 
@@ -25,7 +25,7 @@ router.post("/admin/logout", auth, async (req, res) => {
 
     res.send();
   } catch (error) {
-    res.status(500).send("Something went wrong.");
+    res.status(500).send("Error when trying to log out");
   }
 });
 
