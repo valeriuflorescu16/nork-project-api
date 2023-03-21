@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const mailingListSchema = new mongoose.Schema({
+const emailSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -16,6 +16,6 @@ const mailingListSchema = new mongoose.Schema({
   },
 });
 
-const MailingList = mongoose.model("MailingList", mailingListSchema);
+const Email = mongoose.model("Email", emailSchema);
 
-module.exports = MailingList;
+module.exports = Email;
