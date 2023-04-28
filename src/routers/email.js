@@ -1,8 +1,9 @@
 const express = require("express");
+const { decode } = require("base-64");
 const {
   sendWelcomeEmail,
   sendCancellationEmail,
-} = require("../emails/account");
+} = require("../emails/fixed-emails");
 const router = new express.Router();
 const auth = require("../middlewares/auth");
 const Admin = require("../models/admin");
@@ -10,7 +11,6 @@ const Email = require("../models/email");
 
 router.post("/emails/subscribe", async (req, res) => {
   const email = req.body.email;
-
   const existingEmail = await Email.findOne({ email });
 
   if (existingEmail)
@@ -53,6 +53,20 @@ router.get("/emails", async (req, res) => {
     res
       .status(500)
       .send("Error retrieving emails from the mailing list: " + error);
+  }
+});
+
+router.post("/emails/custom", async (req, res) => {
+  const email = req.body.email;
+  const subject = req.body.subject;
+  const message = decode(req.body.message);
+  const attachments = req.body.attachments;
+
+  try {
+    sendCustomEmail(email, subject, message, attachments);
+    res.status(200).send("Email sent successfully");
+  } catch (error) {
+    res.status(500).send("Error sending custom email: " + error);
   }
 });
 
