@@ -3,9 +3,9 @@ require("dotenv").config();
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendCustomEmail = (email, subject, message, attachments) => {
+const sendCustomEmail = (emails, subject, message, attachments) => {
   sgMail.send({
-    to: email,
+    to: emails,
     from: process.env.SENDER_EMAIL,
     subject: subject,
     text: message,

@@ -5,8 +5,6 @@ const {
   sendCancellationEmail,
 } = require("../emails/fixed-emails");
 const router = new express.Router();
-const auth = require("../middlewares/auth");
-const Admin = require("../models/admin");
 const Email = require("../models/email");
 
 router.post("/emails/subscribe", async (req, res) => {
@@ -33,7 +31,9 @@ router.delete("/emails/unsubscribe", async (req, res) => {
   const email = req.body.email;
 
   try {
-    await Email.findOneAndDelete({ email });
+    const deletedEmail = await Email.findOneAndDelete({ email });
+    if (deletedEmail === null)
+      throw new Error("Email not in our mailing list.");
     sendCancellationEmail(email);
     res
       .status(200)
