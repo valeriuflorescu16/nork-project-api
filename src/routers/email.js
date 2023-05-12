@@ -1,11 +1,12 @@
 const express = require("express");
-const { decode } = require("base-64");
 const {
   sendWelcomeEmail,
   sendCancellationEmail,
 } = require("../emails/fixed-emails");
+const { sendCustomEmail } = require("../emails/custom-emails");
 const router = new express.Router();
 const Email = require("../models/email");
+const auth = require("../middlewares/auth");
 
 router.post("/emails/subscribe", async (req, res) => {
   const email = req.body.email;
@@ -45,25 +46,14 @@ router.delete("/emails/unsubscribe", async (req, res) => {
   }
 });
 
-router.get("/emails", async (req, res) => {
-  try {
-    const emails = (await Email.find()).map((email) => email.email);
-    res.status(200).send(emails);
-  } catch (error) {
-    res
-      .status(500)
-      .send("Error retrieving emails from the mailing list: " + error);
-  }
-});
-
-router.post("/emails/custom", async (req, res) => {
-  const email = req.body.email;
-  const subject = req.body.subject;
-  const message = decode(req.body.message);
+router.post("/emails/custom", auth, async (req, res) => {
+  const emails = (await Email.find()).map((email) => email.email);
   const attachments = req.body.attachments;
+  const subject = req.body.subject;
+  const message = req.body.message;
 
   try {
-    sendCustomEmail(email, subject, message, attachments);
+    sendCustomEmail(emails, subject, message, attachments);
     res.status(200).send("Email sent successfully");
   } catch (error) {
     res.status(500).send("Error sending custom email: " + error);
