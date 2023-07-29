@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const sgMail = require("@sendgrid/mail");
-const radarLink = "http://localhost:3000";
+const radarLink = process.env.RADAR_LINK;
 const unsubscribeURL = process.env.UNSUBSCRIBE_URL;
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
