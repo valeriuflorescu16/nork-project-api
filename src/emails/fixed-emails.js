@@ -38,7 +38,8 @@ const welcomeEmailHTML = (email) => {
 <p>To unsubscribe from our emails, please click <a href="${unsubscribeURL}/${email}">HERE</a></p>`;
 };
 
-const cancellationEmail = `Dear Sir/Madam,
+const cancellationEmail = () => {
+  return `Dear Sir/Madam,
 
 You have now successfully unsubscribed from RADAR.
 
@@ -48,8 +49,10 @@ If you wish to subscribe again, please click the following link and follow the g
 
 Best regards,
 The RADAR Team`;
+};
 
-const cancellationEmailHTML = `<p>Dear Sir/Madam,</p>
+const cancellationEmailHTML = () => {
+  return `<p>Dear Sir/Madam,</p>
 
 <p>You have now successfully unsubscribed from RADAR.</p>
 
@@ -59,6 +62,7 @@ const cancellationEmailHTML = `<p>Dear Sir/Madam,</p>
 
 <p>Best regards,<br>
 The RADAR Team</p>`;
+};
 
 const sendWelcomeEmail = (email) => {
   sgMail.send({
@@ -75,8 +79,8 @@ const sendCancellationEmail = (email) => {
     to: email,
     from: process.env.SENDER_EMAIL,
     subject: "We are sorry to see you go!",
-    text: cancellationEmail,
-    html: cancellationEmailHTML,
+    text: cancellationEmail(),
+    html: cancellationEmailHTML(),
   });
 };
 
